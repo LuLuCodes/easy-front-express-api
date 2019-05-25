@@ -1,0 +1,132 @@
+[2019-05-23T15:12:09.281] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 15:12:07
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 15:12:09
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T15:17:01.303] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 15:17:00
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 15:17:01
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T16:18:27.139] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 16:18:26
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 16:18:27
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T16:54:42.080] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 16:54:39
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 16:54:42
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T17:01:34.063] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 17:01:33
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 17:01:34
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T17:15:37.675] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 17:15:37
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 17:15:37
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T17:24:59.778] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 17:24:58
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 17:24:59
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T17:30:18.875] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 17:30:18
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 17:30:18
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T17:30:31.302] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 17:30:30
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 17:30:31
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T18:47:58.820] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 18:47:56
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 18:47:58
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T20:36:32.179] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 20:36:29
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 20:36:32
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
+[2019-05-23T20:42:44.945] [ERROR] cloudErrorLog - 
+*************** error log start ***************
+request url: http://10.3.12.56:39001
+request method: /BasicQuery/Basic/GetGlobalConfigs
+request time: 2019-05-23 20:42:44
+request body: 
+{"UserSysNo":1,"Extra":{"SaasKey":""},"Filters":[],"Sorts":[],"PageIndex":0,"PageSize":0}
+response time: 2019-05-23 20:42:44
+err message: T_Basic_CompanySaas Can Not Find SaasKey:
+*************** error log end ***************
+
