@@ -36,6 +36,7 @@
     "lodash": "^4.17.11",
     "log4js": "^4.2.0",
     "morgan": "~1.9.1",
+    "node-rsa": "^1.0.5",
     "redis": "^2.8.0",
     "serve-favicon": "^2.5.0",
     "winston": "^3.2.1",
