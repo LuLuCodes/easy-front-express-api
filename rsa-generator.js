@@ -10,7 +10,11 @@ function generator() {
   const publicPem = key.exportKey('pkcs8-public');
 
   fs.ensureDir('./src/pem', err => {
-    console.log(err); // => null
+    if (err) {
+      console.log(err); // => null
+      return;
+    }
+    
     // dir has now been created, including the directory it is to be placed in
     fs.writeFile('./src/pem/public.pem', publicPem, (err) => {
       if (err) throw err;
