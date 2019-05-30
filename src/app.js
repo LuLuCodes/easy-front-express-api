@@ -88,13 +88,14 @@ app.use(function(err, req, res, next) {
 });
 
 // 未携带token请求接口会出错，触发这个
-app.use(function(err, req, res /* next */) {
-  if (err.name === 'UnauthorizedError') {
-    res.status(401).json({
-      message: err.message,
-      error: app.get('env') === 'development' ? err : {}
-    });
-  }
+app.use(function(err, req, res, next) {
+  if (err.name !== 'UnauthorizedError') return next(err);
+  // token验证失败
+  res.status(401);
+  res.json({
+    message: err.message,
+    error: app.get('env') === 'development' ? err : {}
+  });
 });
 
 // catch 404 and forward to error handler
