@@ -79,7 +79,9 @@ rsa-generator.js  // rsa秘钥生成器
 1、auth.js是接口授权中间件，可自行在此处添加接口白名单<br />2、cloud-global.js是云端全局数据加载中间件，在api启动的时候一次性加载云端全局配置
 
 <a name="lUtjV"></a>
-## 6、数据通讯加密
+## 6、数据通讯解密验签
+后端会对前端的请求数据进行解密验签，目前只针对post请求
+
 1、创建rsa秘钥
 
 ```shell
@@ -87,7 +89,58 @@ node rsa-generator.js
 # 将在/src/pem目录下创建public.pem和private.pem，分别是公钥和私钥，公钥给前端加密，私钥给后端解密
 ```
 
-2、libs/common.js里提供了加解密算法
+2、是否启用加密
+在.env中设置`APP_ENABLE_SIGN = '1'`
+
+3、解密和验签过程，如下：
+```
+// 验证签名
+app.post('*', async (req, res, next) => {
+  if (!process.env.APP_ENABLE_SIGN) {
+    next();
+    return;
+  }
+  if (!req.body.S) {
+    res.status(403);
+    res.json({
+      message: '缺少签名参数',
+      error: {}
+    });
+    return;
+  }
+  if (!checkSign(req)) {
+    res.status(403);
+    res.json({
+      message: '非法签名参数',
+      error: {}
+    });
+    return;
+  }
+
+  next();
+});
+```
+
+```
+// 解密和验签算法
+export function checkSign(req) {
+  const privateKey = new NodeRSA(privatePem);
+  privateKey.setOptions({ encryptionScheme: 'pkcs1' });
+
+  let req_sign = req.body.S;
+  req_sign = privateKey.decrypt(req_sign, 'utf8');
+  
+  delete req.body.S;
+  let sign = JSON.stringify(req.body);
+  sign = crypto
+    .createHash('md5')
+    .update(sign, 'utf8')
+    .digest('hex')
+    .toUpperCase();
+
+  return req_sign === sign;
+}
+```
 
 <a name="hqBzp"></a>
 # 四、发布
