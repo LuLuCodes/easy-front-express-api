@@ -49,20 +49,25 @@ export function dateFormat(date, fmt = 'yyyy-MM-dd hh:mm:ss') {
 }
 
 export function checkSign(req) {
-  let privateKey = new NodeRSA(privatePem, 'pkcs8-private', {
-    encryptionScheme: 'pkcs1'
-  });
-
-  let req_sign = req.body.S;
-  req_sign = privateKey.decrypt(req_sign, 'utf8');
-
-  delete req.body.S;
-  let sign = JSON.stringify(req.body);
-  sign = crypto
-    .createHash('md5')
-    .update(sign, 'utf8')
-    .digest('hex')
-    .toUpperCase();
-
-  return req_sign === sign;
+  try {
+    let privateKey = new NodeRSA(privatePem, 'pkcs8-private', {
+      encryptionScheme: 'pkcs1'
+    });
+  
+    let req_sign = req.body.S;
+    req_sign = privateKey.decrypt(req_sign).toString();
+  
+    delete req.body.S;
+    let sign = JSON.stringify(req.body);
+    sign = crypto
+      .createHash('md5')
+      .update(sign, 'utf8')
+      .digest('hex')
+      .toUpperCase();
+  
+    return req_sign === sign;
+  } catch(e) {
+    console.error('req.body: ', JSON.stringify(req.body));
+    return false;
+  }
 }
