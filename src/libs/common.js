@@ -5,9 +5,7 @@ import fs from 'fs';
 // const publicPem = fs.readFileSync(path.join(__dirname, '../pem/public.pem'), 'utf-8').toString();
 const privatePem = fs.readFileSync(path.join(__dirname, '../pem/private.pem'), 'utf-8').toString();
 // const publicKey = new NodeRSA(publicPem);
-const privateKey = new NodeRSA(privatePem);
 // publicKey.setOptions({ encryptionScheme: 'pkcs1' });
-privateKey.setOptions({ encryptionScheme: 'pkcs1' });
 export function transArrayToObject(ary, key) {
   let obj = {};
   for (let item of ary) {
@@ -51,12 +49,13 @@ export function dateFormat(date, fmt = 'yyyy-MM-dd hh:mm:ss') {
 }
 
 export function checkSign(req) {
-  const privateKey = new NodeRSA(privatePem);
-  privateKey.setOptions({ encryptionScheme: 'pkcs1' });
+  let privateKey = new NodeRSA(privatePem, 'pkcs8-private', {
+    encryptionScheme: 'pkcs1'
+  });
 
   let req_sign = req.body.S;
   req_sign = privateKey.decrypt(req_sign, 'utf8');
-  
+
   delete req.body.S;
   let sign = JSON.stringify(req.body);
   sign = crypto
@@ -67,4 +66,3 @@ export function checkSign(req) {
 
   return req_sign === sign;
 }
-
