@@ -74,8 +74,7 @@ export function dateFormat(date, fmt = 'yyyy-MM-dd hh:mm:ss') {
 
 export function checkSign(req) {
   try {
-
-    let req_sign = CryptoJS.AES.decrypt(req.body.S, 'iv-test');
+    let req_sign = CryptoJS.AES.decrypt(req.body.S, req.path);
     req_sign= req_sign.toString(CryptoJS.enc.Utf8);
     delete req.body.S;
     let sign = JSON.stringify(req.body);
