@@ -6,8 +6,8 @@ function generator() {
   const key = new NodeRSA({ b: 1024 });
   key.setOptions({ encryptionScheme: 'pkcs1' });
 
-  const privatePem = key.exportKey('pkcs8-private');
-  const publicPem = key.exportKey('pkcs8-public');
+  const privatePem = key.exportKey('private');
+  const publicPem = key.exportKey('public');
 
   fs.ensureDir('./src/pem', err => {
     if (err) {

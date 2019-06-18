@@ -1,11 +1,9 @@
 import crypto from 'crypto';
-import NodeRSA from 'node-rsa';
-import path from 'path';
-import fs from 'fs';
-// const publicPem = fs.readFileSync(path.join(__dirname, '../pem/public.pem'), 'utf-8').toString();
-const privatePem = fs.readFileSync(path.join(__dirname, '../pem/private.pem'), 'utf-8').toString();
-// const publicKey = new NodeRSA(publicPem);
-// publicKey.setOptions({ encryptionScheme: 'pkcs1' });
+// import NodeRSA from 'node-rsa';
+// import path from 'path';
+// import fs from 'fs';
+import CryptoJS from 'crypto-js';
+// const privatePem = fs.readFileSync(path.join(__dirname, '../pem/private.pem'), 'utf-8').toString();
 export function transArrayToObject(ary, key) {
   let obj = {};
   for (let item of ary) {
@@ -48,15 +46,37 @@ export function dateFormat(date, fmt = 'yyyy-MM-dd hh:mm:ss') {
   return fmt;
 }
 
+// NodeRSA...
+// export function checkSign(req) {
+//   try {
+//     let privateKey = new NodeRSA(privatePem, 'private', {
+//       encryptionScheme: 'pkcs1'
+//     });
+  
+//     let req_sign = req.body.S;
+//     req_sign = Buffer.from(req_sign, 'base64').toString().replace(/%$#%/g,"+");
+//     req_sign = privateKey.decrypt(req_sign, 'utf8');
+  
+//     delete req.body.S;
+//     let sign = JSON.stringify(req.body);
+//     sign = crypto
+//       .createHash('md5')
+//       .update(sign, 'utf8')
+//       .digest('hex')
+//       .toUpperCase();
+  
+//     return req_sign === sign;
+//   } catch(e) {
+//     console.error('req.body: ', JSON.stringify(req.body));
+//     return false;
+//   }
+// }
+
 export function checkSign(req) {
   try {
-    let privateKey = new NodeRSA(privatePem, 'pkcs8-private', {
-      encryptionScheme: 'pkcs1'
-    });
-  
-    let req_sign = req.body.S;
-    req_sign = privateKey.decrypt(req_sign).toString();
-  
+
+    let req_sign = CryptoJS.AES.decrypt(req.body.S, 'iv-test');
+    req_sign= req_sign.toString(CryptoJS.enc.Utf8);
     delete req.body.S;
     let sign = JSON.stringify(req.body);
     sign = crypto
