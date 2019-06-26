@@ -110,7 +110,7 @@ app.use(function(err, req, res, next) {
   res.status(403);
   res.json({
     message: err.message,
-    error: app.get('env') === 'development' ? err : {}
+    error: app.get('env') === 'debug' ? err : {}
   });
 });
 
@@ -121,7 +121,7 @@ app.use(function(err, req, res, next) {
   res.status(401);
   res.json({
     message: err.message,
-    error: app.get('env') === 'development' ? err : {}
+    error: app.get('env') === 'debug' ? err : {}
   });
 });
 
@@ -132,7 +132,7 @@ app.use(function(req, res /* next */) {
   res.status(err.status);
   res.json({
     message: err.message,
-    error: app.get('env') === 'development' ? err : {}
+    error: app.get('env') === 'debug' ? err : {}
   });
 });
 
@@ -142,7 +142,7 @@ app.use(function(err, req, res /* next */) {
   res.status(err.status || 500);
   res.json({
     message: err.message,
-    error: app.get('env') === 'development' ? err : {}
+    error: app.get('env') === 'debug' ? err : {}
   });
 });
 
