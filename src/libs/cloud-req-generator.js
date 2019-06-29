@@ -1,7 +1,8 @@
 /**
  * 云端请求生成器
  */
-import {CompanyCode, BizCompanyCode} from '../config/cloud-config';
+import config from '../config/cloud-config';
+const {CompanyCode, BizCompanyCode} = config;
 
 export function QUERY (headers, session, body) {
   let query = {
