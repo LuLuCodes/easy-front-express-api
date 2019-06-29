@@ -8,11 +8,10 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
-import expressJwt from 'express-jwt';
 
 import sessionConfig from './config/session-config';
 import corsConfig from './config/cors-config';
-// import auth_middleware from './middleware/auth';
+import auth from './middleware/auth';
 import cloud_global from './middleware/cloud-global';
 import log from './log';
 import { checkSign } from './libs/common';
@@ -66,14 +65,11 @@ app.get('/__webpack_hmr', function(req, res) {
   res.send('');
 });
 
-// jwt中间件
+// 验证token
 app.use(
-  expressJwt({
-    secret: process.env.APP_COOKIE_KEY // 加密密钥，可换
-  }).unless({
-    path: ['/login'] // 添加不需要token的接口
-  })
+  auth
 );
+
 
 // 验证签名
 app.post('*', async (req, res, next) => {

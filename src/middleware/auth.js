@@ -4,17 +4,31 @@
  */
 
 // 白名单
-const white_list = [
-  '/user/GetUserInfo',
-  '/user/GetUserInfo1'
-];
+import md5 from 'crypto-js/md5';
+const white_list = ['/user/login', '/user/get-auth-token','/common/SendCaptcha'];
 
-export default function (req, res, next) {
+export default function(req, res, next) {
   if (req.method === 'POST') {
-    if (req.session.Token || white_list.indexOf(req.originalUrl) !== -1) {
+    if (white_list.indexOf(req.originalUrl) !== -1) {
       next();
+    } else if (!req.session.authToken) {
+      res.status(401);
+      res.json({ IsSuccess: false, ErrorMsg: `No authorization token was found` });
+      return;
     } else {
-      return res.sendStatus(401);
+      let token_data = {
+        LoginID: res.session.LoginID,
+        UserSysNo: res.session.UserSysNo
+      };
+      let token_str = `${process.env.APP_COOKIE_KEY}${JSON.stringify(token_data)}${process.env.APP_COOKIE_KEY}`;
+      let authToken = md5(token_str);
+      if (res.session.authToken !== authToken) {
+        res.status(403);
+        res.json({ IsSuccess: false, ErrorMsg: `Forbiddend` });
+        return;
+      } else {
+        next();
+      }
     }
   } else {
     next();
