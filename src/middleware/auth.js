@@ -21,7 +21,7 @@ export default function(req, res, next) {
         UserSysNo: res.session.UserSysNo
       };
       let token_str = `${process.env.APP_COOKIE_KEY}${JSON.stringify(token_data)}${process.env.APP_COOKIE_KEY}`;
-      let authToken = md5(token_str);
+      let authToken = md5(token_str).toString();
       if (res.session.authToken !== authToken) {
         res.status(403);
         res.json({ IsSuccess: false, ErrorMsg: `Forbiddend` });

@@ -13,7 +13,7 @@ router.post('/login', function(req, res /* next */) {
     UserSysNo: 'UserSysNo'
   };
   let token_str = `${process.env.APP_COOKIE_KEY}${JSON.stringify(token_data)}${process.env.APP_COOKIE_KEY}`;
-  let authToken = md5(token_str);
+  let authToken = md5(token_str).toString();
   res.session.authToken = authToken;
   res.json({ IsSuccess: true, ErrorMsg: `` });
 });
