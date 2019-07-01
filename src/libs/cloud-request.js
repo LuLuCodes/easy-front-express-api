@@ -27,10 +27,7 @@ export default async function (config, url, json, timeout = 25000) {
       return { IsSuccess: false, ErrorMsg: `${data.Fault.ErrorDescription}` };
     }
     log.i(baseURL, url, json, data, start, end);
-    if (data.Paging) {
-      data.Body.Paging = data.Paging;
-    }
-    return { IsSuccess: true, Data: data.Body };
+    return {IsSuccess: true, Data: data.Body, Paging: data.Paging};
   } catch (error) {
     let end = new Date();
     log.e(baseURL, url, json, error.message, start, end);
