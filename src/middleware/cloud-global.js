@@ -6,7 +6,7 @@ import { transArrayToObject } from '../libs/common';
 const { Service } = cloudConfig;
 
 export default async function () {
-  const globalData = await request(Service, '/BasicQuery/Basic/GetGlobalConfigs', QUERY(null, null, {
+  const globalData = await request(Service, '/BasicQuery/Basic/GetGlobalConfigList', QUERY(null, null, {
     Extra: {
       SaasKey: ''
     }
