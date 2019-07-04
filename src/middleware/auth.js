@@ -17,12 +17,12 @@ export default function(req, res, next) {
       return;
     } else {
       let token_data = {
-        LoginID: res.session.LoginID,
-        UserSysNo: res.session.UserSysNo
+        LoginID: req.session.LoginID,
+        UserSysNo: req.session.UserSysNo
       };
       let token_str = `${process.env.APP_COOKIE_KEY}${JSON.stringify(token_data)}${process.env.APP_COOKIE_KEY}`;
       let authToken = md5(token_str).toString();
-      if (res.session.authToken !== authToken) {
+      if (req.session.authToken !== authToken) {
         res.status(403);
         res.json({ IsSuccess: false, ErrorMsg: `Forbiddend` });
         return;

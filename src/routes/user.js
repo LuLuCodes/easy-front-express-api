@@ -5,8 +5,8 @@ const router = Router();
 
 router.post('/login', function(req, res /* next */) {
   // 完成登录, 获取用户信息
-  // res.session.LoginID = LoginID;
-  // res.session.UserSysNo = UserSysNo;
+  // req.session.LoginID = LoginID;
+  // req.session.UserSysNo = UserSysNo;
   // 加密，获取token
   let token_data = {
     LoginID: 'LoginID',
@@ -14,7 +14,7 @@ router.post('/login', function(req, res /* next */) {
   };
   let token_str = `${process.env.APP_COOKIE_KEY}${JSON.stringify(token_data)}${process.env.APP_COOKIE_KEY}`;
   let authToken = md5(token_str).toString();
-  res.session.authToken = authToken;
+  req.session.authToken = authToken;
   res.json({ IsSuccess: true, ErrorMsg: `` });
 });
 
