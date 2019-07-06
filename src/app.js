@@ -11,12 +11,11 @@ import connectRedis from 'connect-redis';
 
 import sessionConfig from './config/session-config';
 import corsConfig from './config/cors-config';
-import auth from './middleware/auth';
 import cloud_global from './middleware/cloud-global';
+import auth from './middleware/auth';
+import sign from './middleware/sign';
 import log from './log';
-import { checkSign } from './libs/common';
 import index from './routes/index';
-import user from './routes/user';
 
 const RedisStore = connectRedis(session);
 
@@ -70,35 +69,12 @@ app.use(
   auth
 );
 
-
 // 验证签名
-app.post('*', async (req, res, next) => {
-  if (!process.env.APP_ENABLE_SIGN) {
-    next();
-    return;
-  }
-  if (!req.body.S) {
-    res.status(403);
-    res.json({
-      message: '缺少签名参数',
-      error: {}
-    });
-    return;
-  }
-  if (!checkSign(req)) {
-    res.status(403);
-    res.json({
-      message: '非法签名参数',
-      error: {}
-    });
-    return;
-  }
-
-  next();
-});
+app.use(
+  sign
+);
 
 app.use('/', index);
-app.use('/user', user);
 
 app.use(function(err, req, res, next) {
   if (err.code !== 'EBADCSRFTOKEN') return next(err);
