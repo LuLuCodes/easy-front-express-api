@@ -8,7 +8,7 @@ const router = Router();
 const uploadDir = path.resolve(__dirname, '../temp-files');
 fs.ensureDirSync(uploadDir);
 // 发送验证码
-router.post('/upload-oss', async function(req, res) {
+router.post('/upload-file-oss', async function(req, res) {
   try {
     let oss_client = new oss({
       region: global.GlobalConfigs.regionId.ParamValue,

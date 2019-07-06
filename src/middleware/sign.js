@@ -6,7 +6,7 @@
 // 白名单
 import { checkSign } from '../libs/common';
 const white_list = [
-  '/upload/upload-oss'
+  '/upload/upload-file-oss'
 ];
 
 export default function(req, res, next) {
