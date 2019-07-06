@@ -12,6 +12,6 @@ export default async function () {
     }
   }));
   if (globalData.IsSuccess) {
-    global.GlobalConfigs = transArrayToObject(globalData.Data.GlobalConfigs, 'ParamKey');
+    global.GlobalConfigs = transArrayToObject(globalData.Data, 'ParamKey');
   }
 }

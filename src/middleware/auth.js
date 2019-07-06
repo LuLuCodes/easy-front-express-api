@@ -5,7 +5,7 @@
 
 // 白名单
 import md5 from 'crypto-js/md5';
-const white_list = ['/user/login', '/user/get-auth-token','/common/SendCaptcha'];
+const white_list = ['/user/login', '/user/get-auth-token','/common/SendCaptcha', '/upload/upload-oss'];
 
 export default function(req, res, next) {
   if (req.method === 'POST') {

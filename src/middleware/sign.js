@@ -5,7 +5,9 @@
 
 // 白名单
 import { checkSign } from '../libs/common';
-const white_list = [];
+const white_list = [
+  '/upload/upload-oss'
+];
 
 export default function(req, res, next) {
   if (req.method !== 'POST') {
