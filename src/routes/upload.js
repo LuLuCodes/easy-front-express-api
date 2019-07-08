@@ -38,14 +38,20 @@ router.post('/upload-file-oss', async function(req, res) {
         res.json({ IsSuccess: false, ErrorMsg: `请上传文件` });
         return;
       }
-      let promises = keys.map(key => {
+      let uploadPromises = [];
+      let delPromises = [];
+      keys.map(key => {
         let file = files[key];
         let filename = file.name;
         filename =  Math.random().toString().slice(2) + '_' +filename;
-        return oss_client.putStream(`${fields.path || ''}${filename}`, fs.createReadStream(file.path));
+        let put =  oss_client.putStream(`${fields.path || ''}${filename}`, fs.createReadStream(file.path));
+        let del = fs.remove(file.path);
+        uploadPromises.push(put);
+        delPromises.push(del);
       });
-      let results = await Promise.all(promises);
+      let results = await Promise.all(uploadPromises);
       let urls = results.map(result => result.url);
+      await Promise.all(delPromises);
       res.json({ IsSuccess: true, Data: urls });
     });
   } catch (e) {
