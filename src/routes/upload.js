@@ -5,9 +5,10 @@ import fs from 'fs-extra';
 import path from 'path';
 
 const router = Router();
-const uploadDir = path.resolve(__dirname, '../temp-files-oss');
-fs.ensureDirSync(uploadDir);
-// 发送验证码
+const tempFilesOssDir = path.resolve(__dirname, '../temp-files-oss');
+fs.ensureDirSync(tempFilesOssDir);
+
+// 上传文件至OSS
 router.post('/upload-file-oss', async function(req, res) {
   try {
     let oss_client = new oss({
@@ -22,12 +23,13 @@ router.post('/upload-file-oss', async function(req, res) {
     if (global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue) {
       oss_client.endpoint = global.GlobalConfigs.DomainUrl.ParamValue;
     }
-    let form = new formidable.IncomingForm();
-    form.uploadDir = uploadDir;
-    //设置文件上传之后是否保存文件后缀，默认是不保存
-    form.keepExtensions = true;
-    form.maxFieldSize = 20 * 1024 * 1024;
-    form.multiples = true;
+    let form = new formidable.IncomingForm({
+      uploadDir: tempFilesOssDir,
+       //设置文件上传之后是否保存文件后缀，默认是不保存
+      keepExtensions: true,
+      maxFieldSize: 20 * 1024 * 1024,
+      multiples: true
+    });
     form.parse(req, async (err, fields, files) => {
       if (err) {
         res.json({ IsSuccess: false, ErrorMsg: `文件解析失败` });
