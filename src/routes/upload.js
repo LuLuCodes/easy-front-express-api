@@ -5,7 +5,7 @@ import fs from 'fs-extra';
 import path from 'path';
 
 const router = Router();
-const uploadDir = path.resolve(__dirname, '../temp-files');
+const uploadDir = path.resolve(__dirname, '../temp-files-oss');
 fs.ensureDirSync(uploadDir);
 // 发送验证码
 router.post('/upload-file-oss', async function(req, res) {
