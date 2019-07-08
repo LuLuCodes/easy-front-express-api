@@ -27,6 +27,7 @@ router.post('/upload-file-oss', async function(req, res) {
     //设置文件上传之后是否保存文件后缀，默认是不保存
     form.keepExtensions = true;
     form.maxFieldSize = 20 * 1024 * 1024;
+    form.multiples = true;
     form.parse(req, async (err, fields, files) => {
       if (err) {
         res.json({ IsSuccess: false, ErrorMsg: `文件解析失败` });
