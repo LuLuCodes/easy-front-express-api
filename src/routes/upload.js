@@ -40,17 +40,38 @@ router.post('/upload-file-oss', async function(req, res) {
         res.json({ IsSuccess: false, ErrorMsg: `请上传文件` });
         return;
       }
+    
+      let oss_path = fields.oss_path || '';
+      if (oss_path[0] === '/') {
+        oss_path = oss_path.substring(1, oss_path.length - 1);
+      }
+      if (oss_path[oss_path.length - 1] !== '/') {
+        oss_path += '/';
+      }
       let uploadPromises = [];
       let delPromises = [];
-      keys.map(key => {
-        let file = files[key];
-        let filename = file.name;
-        filename =  Math.random().toString().slice(2) + '_' +filename;
-        let put =  oss_client.putStream(`${fields.path || ''}${filename}`, fs.createReadStream(file.path));
-        let del = fs.remove(file.path);
-        uploadPromises.push(put);
-        delPromises.push(del);
-      });
+      if (keys.length === 1 && keys[0] === '') {
+        let file_list = files[''];
+        for (let file of file_list) {
+          let filename = file.name;
+          filename =  Math.random().toString().slice(2) + '_' +filename;
+          let put =  oss_client.putStream(`${oss_path || ''}${filename}`, fs.createReadStream(file.path));
+          let del = fs.remove(file.path);
+          uploadPromises.push(put);
+          delPromises.push(del);
+        }
+      } else {
+        keys.map(key => {
+          let file = files[key];
+          let filename = file.name;
+          filename =  Math.random().toString().slice(2) + '_' +filename;
+          let put =  oss_client.putStream(`${oss_path || ''}${filename}`, fs.createReadStream(file.path));
+          let del = fs.remove(file.path);
+          uploadPromises.push(put);
+          delPromises.push(del);
+        });
+      }
+      
       let results = await Promise.all(uploadPromises);
       let urls = results.map(result => result.url);
       await Promise.all(delPromises);
