@@ -8,21 +8,39 @@ const router = Router();
 const tempFilesOssDir = path.resolve(__dirname, '../temp-files-oss');
 fs.ensureDirSync(tempFilesOssDir);
 
+let oss_client = null;
+
+function createOSSClient() {
+  oss_client = new oss({
+    region: global.GlobalConfigs.regionId.ParamValue,
+    accessKeyId: global.GlobalConfigs.accessKeyId.ParamValue,
+    accessKeySecret: global.GlobalConfigs.accessKeySecret.ParamValue,
+    bucket: global.GlobalConfigs.bucketName.ParamValue,
+    secure: true,
+    cname: global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue ? true : false,
+    internal: process.env.NODE_ENV === 'production'
+  });
+  if (global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue) {
+    oss_client.endpoint = global.GlobalConfigs.DomainUrl.ParamValue;
+  }
+}
+
+function uploadFileOSS(file, oss_path) {
+  if (!oss_client) {
+    createOSSClient();
+  }
+  let filename = file.name;
+  filename =
+    Math.random()
+      .toString()
+      .slice(2) +
+    '_' +
+    filename;
+  return oss_client.putStream(`${oss_path || ''}${filename}`, fs.createReadStream(file.path));
+}
 // 上传文件至OSS
 router.post('/upload-file-oss', async function(req, res) {
   try {
-    let oss_client = new oss({
-      region: global.GlobalConfigs.regionId.ParamValue,
-      accessKeyId: global.GlobalConfigs.accessKeyId.ParamValue,
-      accessKeySecret: global.GlobalConfigs.accessKeySecret.ParamValue,
-      bucket: global.GlobalConfigs.bucketName.ParamValue,
-      secure: true,
-      cname: global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue ? true : false,
-      internal: process.env.NODE_ENV === 'production'
-    });
-    if (global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue) {
-      oss_client.endpoint = global.GlobalConfigs.DomainUrl.ParamValue;
-    }
     let form = new formidable.IncomingForm({
       uploadDir: tempFilesOssDir,
       //设置文件上传之后是否保存文件后缀，默认是不保存
@@ -51,16 +69,17 @@ router.post('/upload-file-oss', async function(req, res) {
       let uploadPromises = [];
       let delPromises = [];
       if (keys.length === 1 && keys[0] === '') {
-        let file_list = files[''];
-        for (let file of file_list) {
-          let filename = file.name;
-          filename =
-            Math.random()
-              .toString()
-              .slice(2) +
-            '_' +
-            filename;
-          let put = oss_client.putStream(`${oss_path || ''}${filename}`, fs.createReadStream(file.path));
+        if (Array.isArray(files[''])) {
+          let file_list = files[''];
+          for (let file of file_list) {
+            let put = uploadFileOSS(file, oss_path);
+            let del = fs.remove(file.path);
+            uploadPromises.push(put);
+            delPromises.push(del);
+          }
+        } else {
+          let file = files[''];
+          let put = uploadFileOSS(file, oss_path);
           let del = fs.remove(file.path);
           uploadPromises.push(put);
           delPromises.push(del);
@@ -68,14 +87,7 @@ router.post('/upload-file-oss', async function(req, res) {
       } else {
         keys.map(key => {
           let file = files[key];
-          let filename = file.name;
-          filename =
-            Math.random()
-              .toString()
-              .slice(2) +
-            '_' +
-            filename;
-          let put = oss_client.putStream(`${oss_path || ''}${filename}`, fs.createReadStream(file.path));
+          let put = uploadFileOSS(file, oss_path);
           let del = fs.remove(file.path);
           uploadPromises.push(put);
           delPromises.push(del);
@@ -94,17 +106,8 @@ router.post('/upload-file-oss', async function(req, res) {
 
 router.post('/upload-base64-oss', async function(req, res) {
   try {
-    let oss_client = new oss({
-      region: global.GlobalConfigs.regionId.ParamValue,
-      accessKeyId: global.GlobalConfigs.accessKeyId.ParamValue,
-      accessKeySecret: global.GlobalConfigs.accessKeySecret.ParamValue,
-      bucket: global.GlobalConfigs.bucketName.ParamValue,
-      secure: true,
-      cname: global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue ? true : false,
-      internal: process.env.NODE_ENV === 'production'
-    });
-    if (global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue) {
-      oss_client.endpoint = global.GlobalConfigs.DomainUrl.ParamValue;
+    if (!oss_client) {
+      createOSSClient();
     }
     let fileData = req.body.fileData;
     let fileName = req.body.fileName || '';
