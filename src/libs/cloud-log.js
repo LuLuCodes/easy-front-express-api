@@ -2,7 +2,6 @@ import log4js from '../config/log-config';
 import { dateFormat } from './common';
 const cloudErrorLog = log4js.getLogger('cloudErrorLog');
 const cloudResLog = log4js.getLogger('cloudResLog');
-const isDebug = process.env.NODE_ENV === 'debug';
 
 //格式化响应日志
 const formatRes = function (url, method, reqData, resData, start, end) {
@@ -52,9 +51,7 @@ const formatError = function (url, method, reqData, message, start, end) {
 
 export default {
   i: function (url, method, reqData, resData, start, end) {
-    if (isDebug || (end - start) > 500) {
-      cloudResLog.info(formatRes(url, method, reqData, resData, start, end));
-    }
+    cloudResLog.info(formatRes(url, method, reqData, resData, start, end));
   },
   e: function (url, method, reqData, message, start, end) {
     cloudErrorLog.error(formatError(url, method, reqData, message, start, end));
