@@ -5,6 +5,6 @@ export default {
     port: 6379,
     db: 15
   },
-  secret: 'MYun 123!@# web',
-  key: 'express-api'
+  secret: process.env.APP_COOKIE_KEY || 'MYun 123!@# web',
+  key: process.env.APP_COOKIE_KEY || 'express-api'
 };
