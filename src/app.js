@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
+import path from 'path';
 
 import sessionConfig from './config/session-config';
 import corsConfig from './config/cors-config';
@@ -43,6 +44,7 @@ app.use(
     saveUninitialized: false
   })
 );
+app.use(express.static(path.join(__dirname, 'public')));
 
 // logger
 app.post('*', async (req, res, next) => {
