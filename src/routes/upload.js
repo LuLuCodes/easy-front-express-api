@@ -17,12 +17,9 @@ function createOSSClient() {
     accessKeySecret: global.GlobalConfigs.accessKeySecret.ParamValue,
     bucket: global.GlobalConfigs.bucketName.ParamValue,
     secure: true,
-    cname: global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue ? true : false,
+    endpoint: global.GlobalConfigs.endpoint.ParamValue,
     internal: process.env.NODE_ENV === 'production'
   });
-  if (global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue) {
-    oss_client.endpoint = global.GlobalConfigs.DomainUrl.ParamValue;
-  }
 }
 
 function uploadFileOSS(file, oss_path) {
@@ -95,7 +92,14 @@ router.post('/upload-file-oss', async function(req, res) {
       }
 
       let results = await Promise.all(uploadPromises);
-      let urls = results.map(result => result.url);
+      let urls = results.map(result => {
+        if (global.GlobalConfigs && global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue) {
+          // cdn地址
+          return result.url.replace(/( http|https):\/\/(.*?)\//g, global.GlobalConfigs.DomainUrl.ParamValue);
+        } else {
+          return result.url;
+        }
+      });
       await Promise.all(delPromises);
       res.json({ IsSuccess: true, Data: urls });
     });
@@ -144,7 +148,12 @@ router.post('/upload-base64-oss', async function(req, res) {
     // 文件名
     const oss_path = `${filePath}${fileName}`;
     let put = await oss_client.put(oss_path, dataBuffer);
-    res.json({ IsSuccess: true, Data: put.url });
+    if (global.GlobalConfigs && global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue) {
+      // cdn地址
+      res.json({ IsSuccess: true, Data: put.url.replace(/( http|https):\/\/(.*?)\//g, global.GlobalConfigs.DomainUrl.ParamValue)});
+    } else {
+      res.json({ IsSuccess: true, Data: put.url });
+    }
   } catch (e) {
     res.json({ IsSuccess: false, ErrorMsg: `${e.message}` });
   }
