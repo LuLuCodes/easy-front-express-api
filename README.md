@@ -57,12 +57,15 @@ src  // 源码文件目录
  |--routers  // 路由文件夹
  |--utils  // 暂无用处，忽略
  |--views  // 页面文件夹，前后端分离无需用到，忽略
+ |--.env // 开发环境变量配置文件
+ |--.env.pre-release // 验收环境变量配置文件
+ |--.env.production // 生产环境变量配置文件
+ |--.env // 测试环境变量配置文件
  |--app.js  // express启动文件
  |--env.js  // 环境变量加载方法文件
  |--index.js  // 程序入口文件
  |--log.js  // 日志方法文件
 .babelrc  // babel配置文件
-.env // 环境变量配置文件
 .eslintrc  // eslint语法检查配置文件
 .gitignore  // git忽略文件
 package.json  // npm包文件
@@ -78,7 +81,11 @@ rsa-generator.js  // rsa秘钥生成器
 
 2、所有配置在.env 的环境变量，均可在其他代码中加上 process.env.直接使用，如下：<br />![image.png](https://cdn.nlark.com/yuque/0/2019/png/146103/1559207297304-c3b8e254-6e34-46cf-b01c-330ed7896608.png#align=left&display=inline&height=274&name=image.png&originHeight=274&originWidth=716&size=74375&status=done&width=716)
 
-3、在生产环境中，切记将.env 中的 NODE_ENV 改成 production，改环境变量不可删除
+3、环境变量一共有个4个：
+* .env 本地
+* .env.pre-release 验收
+* .env.production 生产
+* .env.test 测试
 
 <a name="iJIfH"></a>
 
@@ -169,7 +176,14 @@ export function checkSign(req) {
 
 # 四、发布
 
-1、运行 npm run build 后，会在项目根目录产生一个 dist 目录<br />2、运行 pm2 start dist/index.js -i 4 --name="expess-api"后，就可以以 pm2 模式运行程序
+1、通过以下命令分别编出不同环境的部署包：
+* npm run build 生产环境
+* npm run pre-release 验收环境
+* npm run test 测试环境
+
+2、运行 npm run *** 后，会在项目根目录产生一个 dist 目录<br />
+
+3、运行 pm2 start dist/index.js -i 4 --name="expess-api"后，就可以以 pm2 模式运行程序
 
 <a name="c6xRC"></a>
 

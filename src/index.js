@@ -10,6 +10,7 @@ import app from './app';
 import http from 'http';
 
 console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
+console.log('__dirname:', __dirname);
 /**
  * Get port from environment and store in Express.
  */

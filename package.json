@@ -8,9 +8,9 @@
     "prestart": "npm run build",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "build": "rimraf dist && babel src -D --out-dir dist && shx cp .env.production ./dist/.env",
-    "pre-release": "rimraf dist && babel src -D --out-dir dist && shx cp .env.pre-release ./dist/.env",
-    "test": "rimraf dist && babel src -D --out-dir dist && shx cp .env.test ./dist/.env",
+    "build": "rimraf dist && babel src -D --out-dir dist && shx cp src/.env.production ./dist/.env",
+    "pre-release": "rimraf dist && babel src -D --out-dir dist && shx cp src/.env.pre-release ./dist/.env",
+    "test": "rimraf dist && babel src -D --out-dir dist && shx cp src/.env.test ./dist/.env",
     "prettier": "prettier --write **/*.{js,json,yml,yaml,md}",
     "dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps",
     "commit": "git cz"
