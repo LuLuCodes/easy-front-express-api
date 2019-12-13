@@ -5,9 +5,11 @@
  */
 
 const debug = require('debug')('easy-front-express-api:server');
+import './env';
 import app from './app';
 import http from 'http';
 
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
 /**
  * Get port from environment and store in Express.
  */
