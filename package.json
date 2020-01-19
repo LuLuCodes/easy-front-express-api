@@ -13,7 +13,8 @@
     "test": "rimraf dist && babel src -D --out-dir dist && shx cp src/.env.test ./dist/.env",
     "prettier": "prettier --write **/*.{js,json,yml,yaml,md}",
     "dev": "nodemon --watch .env --watch src --exec babel-node src --source-maps",
-    "commit": "git cz"
+    "commit": "git cz",
+    "genlog": "conventional-changelog -p angular -i .github/CHANGELOG.md -s"
   },
   "dependencies": {
     "ali-oss": "^6.1.1",
