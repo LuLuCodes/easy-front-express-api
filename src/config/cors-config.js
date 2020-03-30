@@ -16,7 +16,7 @@ export default function (req, callback) {
   let corsOptions;
   if (white_list.indexOf(req.header('Origin')) !== -1 || isDebug) {
     corsOptions = {
-      origin: true,
+      origin: '*', // req.header('Origin')
       ...baseOptions
     }; // reflect (enable) the requested origin in the CORS response
   } else {
