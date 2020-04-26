@@ -1,6 +1,6 @@
 {
   "name": "easy-front-express-api",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Easy Front Express API",
   "private": true,
   "scripts": {
