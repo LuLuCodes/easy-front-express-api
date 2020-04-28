@@ -4,7 +4,7 @@ import user from './user';
 import common from './common';
 import upload from './upload';
 const router = Router();
-router.get('/index', function(req, res) {
+router.get('/', function(req, res) {
   res.render('index', { title: 'Vue' });
 });
 router.use('/user', user);
