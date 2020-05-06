@@ -2,9 +2,9 @@
  * 云端请求生成器
  */
 import config from '../config/cloud-config';
-const {CompanyCode, BizCompanyCode} = config;
+const { CompanyCode, BizCompanyCode } = config;
 
-export function QUERY (headers, session, body) {
+export function QUERY(headers, session, body) {
   let query = {
     CompanyCode,
     UserSysNo: 1,
@@ -12,7 +12,7 @@ export function QUERY (headers, session, body) {
     Filters: [],
     Sorts: [],
     PageIndex: body.PageIndex || 0,
-    PageSize: body.PageSize || 0
+    PageSize: body.PageSize || 0,
   };
 
   if (session && session.User && session.User.UserSysNo) {
@@ -38,14 +38,14 @@ export function QUERY (headers, session, body) {
   return query;
 }
 
-export function ACTION (headers, session, body) {
+export function ACTION(headers, session, body) {
   let action = {
     CompanyCode,
     UserSysNo: 1,
-    Body: { BizCompanyCode }
+    Body: { BizCompanyCode },
   };
   if (session && session.User && session.User.UserSysNo) {
-    action.Body.UserSysNo = session.User.UserSysNo;
+    action.UserSysNo = session.User.UserSysNo;
   }
 
   if (headers && headers['bizcompanycode']) {
@@ -68,7 +68,7 @@ export function EDI_VERIFY(headers, session, type) {
     MyAppKey: global.GlobalConfigs.MyAppKey.ParamValue,
     MyAppToken: global.GlobalConfigs.MyAppToken.ParamValue,
     MyAppSecret: global.GlobalConfigs.MyAppSecret.ParamValue,
-    EDIType: type
+    EDIType: type,
   };
   if (headers && headers['companycode']) {
     verify.CompanyCode = parseInt(headers['companycode']);
@@ -78,11 +78,11 @@ export function EDI_VERIFY(headers, session, type) {
   return verify;
 }
 
-export function EDI (headers, session, body) {
+export function EDI(headers, session, body) {
   let query = {
     CompanyCode,
     UserSysNo: 1,
-    Extra: {}
+    Extra: {},
   };
   if (session && session.User && session.User.UserSysNo) {
     query.UserSysNo = session.User.UserSysNo;
