@@ -19,7 +19,10 @@ export function QUERY(headers, session, body) {
 
   if (session && session.User && session.User.UserSysNo) {
     query.UserSysNo = session.User.UserSysNo;
+  } else if (headers && headers['usersysno']) {
+    query.UserSysNo = parseInt(headers['usersysno']);
   }
+
   if (headers && headers['bizcompanycode']) {
     query.Extra.BizCompanyCode = parseInt(headers['bizcompanycode']);
   } else if (session && session.BizCompanyCode) {
@@ -30,6 +33,7 @@ export function QUERY(headers, session, body) {
   } else if (session && session.CompanyCode) {
     query.CompanyCode = session.CompanyCode;
   }
+
   query.Extra = { ...query.Extra, ...body.Extra };
   if (body.Filters) {
     query.Filters = body.Filters;
@@ -53,7 +57,9 @@ export function ACTION(headers, session, body) {
     Body: { BizCompanyCode },
   };
   if (session && session.User && session.User.UserSysNo) {
-    action.Body.UserSysNo = session.User.UserSysNo;
+    action.UserSysNo = session.User.UserSysNo;
+  } else if (headers && headers['usersysno']) {
+    action.UserSysNo = parseInt(headers['usersysno']);
   }
 
   if (headers && headers['bizcompanycode']) {
