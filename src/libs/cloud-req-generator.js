@@ -1,6 +1,8 @@
 /**
- * 云端请求生成器
+ * 云端请求生成器V2
+ * 说明：新版云端请求生成器，支持Conditions查询操作，让的查询更加灵活
  */
+const package_conditions = require('./cloud-condition/condition-assembler');
 import config from '../config/cloud-config';
 const { CompanyCode, BizCompanyCode } = config;
 
@@ -35,6 +37,12 @@ export function QUERY(headers, session, body) {
   if (body.Sorts) {
     query.Sorts = body.Sorts;
   }
+  if (body.KeySysNo) {
+    query.KeySysNo = body.KeySysNo;
+  }
+  if (body.Where) {
+    query.Conditions = package_conditions(body.Where);
+  }
   return query;
 }
 
@@ -45,7 +53,7 @@ export function ACTION(headers, session, body) {
     Body: { BizCompanyCode },
   };
   if (session && session.User && session.User.UserSysNo) {
-    action.UserSysNo = session.User.UserSysNo;
+    action.Body.UserSysNo = session.User.UserSysNo;
   }
 
   if (headers && headers['bizcompanycode']) {
