@@ -8,21 +8,26 @@ const baseOptions = {
     'Content-Length',
     'Accept',
     'x-forwarded-for',
-    'Authorization'
-  ]
+    'Authorization',
+  ],
 };
 
-export default function (req, callback) {
+export default function(req, callback) {
   let corsOptions;
-  if (white_list.indexOf(req.header('Origin')) !== -1 || isDebug) {
+  if (isDebug) {
+    corsOptions = {
+      origin: true, // req.header('Origin')
+      ...baseOptions,
+    }; // reflect (enable) the requested origin in the CORS response
+  } else if (white_list.indexOf(req.header('Origin')) !== -1) {
     corsOptions = {
       origin: '*', // req.header('Origin')
-      ...baseOptions
+      ...baseOptions,
     }; // reflect (enable) the requested origin in the CORS response
   } else {
     corsOptions = {
       origin: false,
-      ...baseOptions
+      ...baseOptions,
     }; // disable CORS for this request
   }
   callback(null, corsOptions); // callback expects two parameters: error and options
