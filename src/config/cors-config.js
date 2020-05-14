@@ -14,14 +14,9 @@ const baseOptions = {
 
 export default function(req, callback) {
   let corsOptions;
-  if (isDebug) {
+  if (white_list.indexOf(req.header('Origin')) !== -1 || isDebug) {
     corsOptions = {
       origin: true, // req.header('Origin')
-      ...baseOptions,
-    }; // reflect (enable) the requested origin in the CORS response
-  } else if (white_list.indexOf(req.header('Origin')) !== -1) {
-    corsOptions = {
-      origin: '*', // req.header('Origin')
       ...baseOptions,
     }; // reflect (enable) the requested origin in the CORS response
   } else {
