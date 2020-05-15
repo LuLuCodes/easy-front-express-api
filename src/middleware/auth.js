@@ -12,6 +12,7 @@ const white_list = [
   '/upload/upload-base64-oss',
   '/common/SendCaptcha',
   '/common/GetAreaList',
+  '/common/GetStreeList',
   '/common/CheckLoginInStatus2',
 ];
 
