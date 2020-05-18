@@ -1,5 +1,7 @@
 import crypto from 'crypto';
 import CryptoJS from 'crypto-js';
+import md5 from 'crypto-js/md5';
+import aes from 'crypto-js/aes';
 export function transArrayToObject(ary, key) {
   let obj = {};
   for (let item of ary) {
@@ -50,7 +52,7 @@ export function dateFormat(date, fmt = 'yyyy-MM-dd hh:mm:ss') {
 
 export function checkSign(req) {
   try {
-    let req_sign = CryptoJS.AES.decrypt(req.body.S, req.path);
+    let req_sign = aes.decrypt(req.body.S, req.path);
     req_sign = req_sign.toString(CryptoJS.enc.Utf8);
     delete req.body.S;
     let sign = JSON.stringify(req.body);
@@ -65,4 +67,34 @@ export function checkSign(req) {
     console.error('req.body: ', JSON.stringify(req.body));
     return false;
   }
+}
+
+export function ediVerify(data, verify) {
+  const params = {
+    EDIData: JSON.stringify(data),
+    EDIType: verify.EDIType,
+    MyAppKey: verify.MyAppKey,
+    MyAppToken: verify.MyAppToken,
+  };
+  const entrys = Object.keys(params);
+  entrys.sort();
+  let str = '';
+  entrys.forEach((key) => {
+    str +=
+      '&' +
+      key +
+      '=' +
+      encodeURIComponent(
+        typeof params[key] === 'object'
+          ? JSON.stringify(params[key])
+          : params[key]
+      );
+  });
+  str += verify.MyAppSecret;
+  str = str
+    .toUpperCase()
+    .substr(1, str.length)
+    .replace(/%20/g, '+');
+  params.Sign = md5(str).toString();
+  return params;
 }
