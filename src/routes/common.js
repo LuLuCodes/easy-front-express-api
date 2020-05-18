@@ -15,7 +15,6 @@ router.post('/SendCaptcha', async function(req, res) {
       '/UMAction/Captcha/SendCaptcha',
       ACTION(req.headers, req.session, req.body)
     );
-    console.log('SendCaptcha ok:', data);
     res.json(data);
   } catch (e) {
     console.log('SendCaptcha err:', e.message);

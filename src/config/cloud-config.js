@@ -4,15 +4,15 @@ const config_dev = {
   BizCompanyCode: 29014,
   Service: {
     IP: '10.3.12.56',
-    Port: 29001
+    Port: 29001,
   },
-  EDI: {
+  EDIService: {
     IP: '10.3.12.56',
     Port: 9001,
     Verify: {
-      MyVersion: 'V2'
-    }
-  }
+      MyVersion: 'V2',
+    },
+  },
 };
 
 const config_pro = {
@@ -20,15 +20,15 @@ const config_pro = {
   BizCompanyCode: 29014,
   Service: {
     IP: '10.3.12.56',
-    Port: 29001
+    Port: 29001,
   },
-  EDI: {
+  EDIService: {
     IP: '10.3.12.56',
     Port: 9001,
     Verify: {
-      MyVersion: 'V2'
-    }
-  }
+      MyVersion: 'V2',
+    },
+  },
 };
 
 export default process.env.NODE_ENV === 'debug' ? config_dev : config_pro;
