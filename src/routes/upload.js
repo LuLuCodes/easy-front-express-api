@@ -18,7 +18,7 @@ function createOSSClient() {
     bucket: global.GlobalConfigs.bucketName.ParamValue,
     secure: true,
     endpoint: global.GlobalConfigs.endpoint.ParamValue,
-    internal: process.env.NODE_ENV === 'production'
+    internal: process.env.NODE_ENV === 'production',
   });
 }
 
@@ -33,7 +33,10 @@ function uploadFileOSS(file, oss_path) {
       .slice(2) +
     '_' +
     filename;
-  return oss_client.putStream(`${oss_path || ''}${filename}`, fs.createReadStream(file.path));
+  return oss_client.putStream(
+    `${oss_path || ''}${filename}`,
+    fs.createReadStream(file.path)
+  );
 }
 // 上传文件至OSS
 router.post('/upload-file-oss', async function(req, res) {
@@ -43,7 +46,7 @@ router.post('/upload-file-oss', async function(req, res) {
       //设置文件上传之后是否保存文件后缀，默认是不保存
       keepExtensions: true,
       maxFieldSize: 20 * 1024 * 1024,
-      multiples: true
+      multiples: true,
     });
     form.parse(req, async (err, fields, files) => {
       if (err) {
@@ -82,7 +85,7 @@ router.post('/upload-file-oss', async function(req, res) {
           delPromises.push(del);
         }
       } else {
-        keys.map(key => {
+        keys.map((key) => {
           let file = files[key];
           let put = uploadFileOSS(file, oss_path);
           let del = fs.remove(file.path);
@@ -92,10 +95,17 @@ router.post('/upload-file-oss', async function(req, res) {
       }
 
       let results = await Promise.all(uploadPromises);
-      let urls = results.map(result => {
-        if (global.GlobalConfigs && global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue) {
+      let urls = results.map((result) => {
+        if (
+          global.GlobalConfigs &&
+          global.GlobalConfigs.DomainUrl &&
+          global.GlobalConfigs.DomainUrl.ParamValue
+        ) {
           // cdn地址
-          return result.url.replace(/( http|https):\/\/(.*?)\//g, global.GlobalConfigs.DomainUrl.ParamValue);
+          return result.url.replace(
+            /( http|https):\/\/(.*?)\//g,
+            global.GlobalConfigs.DomainUrl.ParamValue
+          );
         } else {
           return result.url;
         }
@@ -128,7 +138,6 @@ router.post('/upload-base64-oss', async function(req, res) {
       filePath += '/';
     }
 
-    
     const base64 = fileData.split(',').pop();
     const fileType = fileData
       .split(';')
@@ -136,21 +145,34 @@ router.post('/upload-base64-oss', async function(req, res) {
       .split(':')
       .pop()
       .split('/')
-      .pop().split('.')
+      .pop()
+      .split('.')
       .pop();
     const dataBuffer = new Buffer(base64, 'base64');
 
     fileName =
-            Math.random()
-              .toString()
-              .slice(2) + `${fileName ? '_' + fileName : ''}` + `.${fileType}`;
+      Math.random()
+        .toString()
+        .slice(2) +
+      `${fileName ? '_' + fileName : ''}` +
+      `.${fileType}`;
 
     // 文件名
     const oss_path = `${filePath}${fileName}`;
     let put = await oss_client.put(oss_path, dataBuffer);
-    if (global.GlobalConfigs && global.GlobalConfigs.DomainUrl && global.GlobalConfigs.DomainUrl.ParamValue) {
+    if (
+      global.GlobalConfigs &&
+      global.GlobalConfigs.DomainUrl &&
+      global.GlobalConfigs.DomainUrl.ParamValue
+    ) {
       // cdn地址
-      res.json({ IsSuccess: true, Data: put.url.replace(/( http|https):\/\/(.*?)\//g, global.GlobalConfigs.DomainUrl.ParamValue)});
+      res.json({
+        IsSuccess: true,
+        Data: put.url.replace(
+          /( http|https):\/\/(.*?)\//g,
+          global.GlobalConfigs.DomainUrl.ParamValue
+        ),
+      });
     } else {
       res.json({ IsSuccess: true, Data: put.url });
     }
