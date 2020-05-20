@@ -14,6 +14,7 @@ const white_list = [
   '/common/GetAreaList',
   '/common/GetStreeList',
   '/common/CheckLoginInStatus2',
+  '/wx/jssdk',
 ];
 
 export default function(req, res, next) {
