@@ -103,7 +103,7 @@ router.post('/upload-file-oss', async function(req, res) {
         ) {
           // cdn地址
           return result.url.replace(
-            /( http|https):\/\/(.*?)\//g,
+            /(http|https):\/\/(.*?)\//g,
             global.GlobalConfigs.DomainUrl.ParamValue
           );
         } else {
