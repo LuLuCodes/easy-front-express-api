@@ -56,9 +56,9 @@ router.post('/login', async function(req, res /* next */) {
         UserSysNo: loginData.UserSysNo,
       };
 
-      const token_str = `${process.env.APP_COOKIE_KEY}${JSON.stringify(
-        tokenData
-      )}${process.env.APP_COOKIE_KEY}`;
+      const token_str = `${process.env.COOKIE_KEY}${JSON.stringify(tokenData)}${
+        process.env.COOKIE_KEY
+      }`;
       const authToken = md5(token_str).toString();
 
       req.session.authToken = authToken;

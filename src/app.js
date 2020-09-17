@@ -29,7 +29,7 @@ app.use(helmet());
 app.use(compression());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: false }));
-app.use(cookieParser(process.env.APP_COOKIE_KEY));
+app.use(cookieParser(process.env.COOKIE_KEY));
 
 app.use(
   session({
@@ -39,7 +39,7 @@ app.use(
     cookie: sessionConfig.cookie,
     resave: true,
     rolling: true,
-    saveUninitialized: false
+    saveUninitialized: false,
   })
 );
 app.use(express.static(path.join(__dirname, 'public')));
@@ -65,14 +65,10 @@ app.get('/__webpack_hmr', function(req, res) {
 });
 
 // 验证token
-app.use(
-  auth
-);
+app.use(auth);
 
 // 验证签名
-app.use(
-  sign
-);
+app.use(sign);
 
 app.use('/', index);
 
@@ -82,7 +78,7 @@ app.use(function(err, req, res, next) {
   res.status(403);
   res.json({
     message: err.message,
-    error: process.env.NODE_ENV === 'debug' ? err : {}
+    error: process.env.NODE_ENV === 'debug' ? err : {},
   });
 });
 
@@ -93,7 +89,7 @@ app.use(function(err, req, res, next) {
   res.status(401);
   res.json({
     message: err.message,
-    error: process.env.NODE_ENV === 'debug' ? err : {}
+    error: process.env.NODE_ENV === 'debug' ? err : {},
   });
 });
 
@@ -104,7 +100,7 @@ app.use(function(req, res /* next */) {
   res.status(err.status);
   res.json({
     message: err.message,
-    error: process.env.NODE_ENV === 'debug' ? err : {}
+    error: process.env.NODE_ENV === 'debug' ? err : {},
   });
 });
 
@@ -114,7 +110,7 @@ app.use(function(err, req, res /* next */) {
   res.status(err.status || 500);
   res.json({
     message: err.message,
-    error: process.env.NODE_ENV === 'debug' ? err : {}
+    error: process.env.NODE_ENV === 'debug' ? err : {},
   });
 });
 

@@ -33,9 +33,9 @@ export default function(req, res, next) {
         LoginID: req.session.LoginID,
         UserSysNo: req.session.UserSysNo,
       };
-      let token_str = `${process.env.APP_COOKIE_KEY}${JSON.stringify(
-        token_data
-      )}${process.env.APP_COOKIE_KEY}`;
+      let token_str = `${process.env.COOKIE_KEY}${JSON.stringify(token_data)}${
+        process.env.COOKIE_KEY
+      }`;
       let authToken = md5(token_str).toString();
       if (req.session.authToken !== authToken) {
         res.status(403);
