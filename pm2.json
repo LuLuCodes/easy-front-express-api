@@ -1,0 +1,8 @@
+{
+  "name": "easy-front-express-api",
+  "script": "dist/index.js",
+  "instances": "2",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

@@ -1,0 +1,68 @@
+# 使用docker镜像
+# image: docker:latest
+
+# 设置变量
+variables:
+  # 镜像仓库地址
+  REGISTRY: registry.cn-shenzhen.aliyuncs.com
+  # 镜像仓库账号
+  REGISTRY_USER: public@myun.info
+  # 镜像仓库密码
+  REGISTRY_PASSWORD: Myun@123jx
+  # 镜像地址
+  REGISTRY_IMAGE: registry.cn-hangzhou.aliyuncs.com/production/${CI_PROJECT_NAME}
+  # 镜像启动后的容器名
+  CONTAINER_NAME: ${CI_PROJECT_NAME}
+
+stages:
+  - test
+  - production
+
+cache:
+  key: ${CI_COMMIT_REF_NAME}
+  paths:
+    - node_modules
+
+prod-build:
+  stage: production
+  tags:
+    - api-docker-runner
+  only:
+    - tags
+  script:
+    - cnpm install --progress=false
+    - npm run build
+    # 停止并删除正在使用当前镜像的容器
+    - if [ "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
+    - docker rm -f $CONTAINER_NAME
+    - fi
+    # 删除当前已存在的镜像
+    - if [ "$(docker images | grep $REGISTRY_IMAGE)" ]; then
+    - docker images | grep $REGISTRY_IMAGE | awk '{print $1":"$2}' | xargs docker rmi
+    - fi
+    # 登录镜像仓库
+    - echo "$REGISTRY_PASSWORD" | docker login -u $REGISTRY_USER $REGISTRY --password-stdin
+    # 构建新的镜像
+    - docker build -t $REGISTRY_IMAGE:latest .
+    - docker build -t $REGISTRY_IMAGE:$CI_COMMIT_TAG .
+    # 上传镜像
+    - docker push $REGISTRY_IMAGE:latest
+    - docker push $REGISTRY_IMAGE:$CI_COMMIT_TAG
+
+test-build:
+  stage: test
+  tags:
+    - api-runner
+  only:
+    - test
+  script:
+    - cnpm install --progress=false
+    - npm run test
+  artifacts:
+    # 使用当前stage和分支名称作为存档名称
+    name: '${CI_PROJECT_NAME}_${CI_COMMIT_REF_NAME}'
+    # 工件缓存的有效时间
+    expire_in: 3 days
+    # 路径
+    paths:
+      - dist
