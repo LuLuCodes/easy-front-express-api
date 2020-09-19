@@ -10,7 +10,7 @@ variables:
   # 镜像仓库密码
   REGISTRY_PASSWORD: Myun@123jx
   # 镜像地址
-  REGISTRY_IMAGE: registry.cn-hangzhou.aliyuncs.com/production/${CI_PROJECT_NAME}
+  REGISTRY_IMAGE: registry.cn-hangzhou.aliyuncs.com/myun-production/${CI_PROJECT_NAME}
   # 镜像启动后的容器名
   CONTAINER_NAME: ${CI_PROJECT_NAME}
 
